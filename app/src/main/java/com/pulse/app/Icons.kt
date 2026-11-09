@@ -34,6 +34,7 @@ object Lucide {
     val Clock: ImageVector by lazy { icon("Clock", listOf("M2.0,12.0a10.0,10.0 0 1,0 20.0,0a10.0,10.0 0 1,0 -20.0,0", "M12 6v6l4 2")) }
     val Trash: ImageVector by lazy { icon("Trash", listOf("M10 11v6", "M14 11v6", "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6", "M3 6h18", "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2")) }
     val Info: ImageVector by lazy { icon("Info", listOf("M2.0,12.0a10.0,10.0 0 1,0 20.0,0a10.0,10.0 0 1,0 -20.0,0", "M12 16v-4", "M12 8h.01")) }
+    val Pencil: ImageVector by lazy { icon("Pencil", listOf("M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z", "m15 5 4 4")) }
 }
 
 private fun icon(name: String, paths: List<String>): ImageVector {

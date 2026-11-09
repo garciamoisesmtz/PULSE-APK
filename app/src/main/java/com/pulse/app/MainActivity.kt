@@ -63,13 +63,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class Tab(val label: String) { HOME("Inicio"), CAL("Calendario"), TRAIN("Entrenar"), MEAS("Medidas"), SET("Ajustes") }
+enum class Tab(val label: String) { HOME("Inicio"), CAL("Calendario"), TRAIN("Entrenar"), MEAS("Progreso"), SET("Ajustes") }
 
 private fun Tab.icon(): ImageVector = when (this) {
     Tab.HOME -> Lucide.House
     Tab.CAL -> Lucide.CalendarDays
     Tab.TRAIN -> Lucide.Dumbbell
-    Tab.MEAS -> Lucide.Scale
+    Tab.MEAS -> Lucide.TrendingDown
     Tab.SET -> Lucide.Settings
 }
 
