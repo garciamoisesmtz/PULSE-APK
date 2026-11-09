@@ -35,6 +35,12 @@ object Lucide {
     val Trash: ImageVector by lazy { icon("Trash", listOf("M10 11v6", "M14 11v6", "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6", "M3 6h18", "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2")) }
     val Info: ImageVector by lazy { icon("Info", listOf("M2.0,12.0a10.0,10.0 0 1,0 20.0,0a10.0,10.0 0 1,0 -20.0,0", "M12 16v-4", "M12 8h.01")) }
     val Pencil: ImageVector by lazy { icon("Pencil", listOf("M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z", "m15 5 4 4")) }
+    val Minus: ImageVector by lazy { icon("Minus", listOf("M5 12h14")) }
+    val Utensils: ImageVector by lazy { icon("Utensils", listOf("M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2", "M7 2v20", "M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7")) }
+    val Basket: ImageVector by lazy { icon("Basket", listOf("m15 11-1 9", "m19 11-4-7", "M2 11h20", "m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4", "M4.5 15.5h15", "m5 11 4-7", "m9 11 1 9")) }
+    val Alert: ImageVector by lazy { icon("Alert", listOf("m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3", "M12 9v4", "M12 17h.01")) }
+    val Refresh: ImageVector by lazy { icon("Refresh", listOf("M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", "M21 3v5h-5", "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", "M8 16H3v5")) }
+    val Search: ImageVector by lazy { icon("Search", listOf("m21 21-4.34-4.34", "M3.0,11.0a8.0,8.0 0 1,0 16.0,0a8.0,8.0 0 1,0 -16.0,0")) }
 }
 
 private fun icon(name: String, paths: List<String>): ImageVector {

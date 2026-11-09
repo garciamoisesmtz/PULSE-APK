@@ -38,7 +38,7 @@ import java.time.YearMonth
 import java.time.temporal.TemporalAdjusters
 
 @Composable
-fun DashboardScreen(store: Store, onTrain: () -> Unit, onMeasure: () -> Unit) {
+fun DashboardScreen(store: Store, onTrain: () -> Unit, onMeasure: () -> Unit, onSettings: () -> Unit) {
     val data = store.data
     val sprint = data.sprint ?: return
     val today = LocalDate.now()
@@ -58,13 +58,16 @@ fun DashboardScreen(store: Store, onTrain: () -> Unit, onMeasure: () -> Unit) {
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 20.dp),
     ) {
-        Gap(18)
+        Gap(8)
         Row(verticalAlignment = Alignment.CenterVertically) {
             PulseLogo(18.sp)
             Spacer(Modifier.weight(1f))
             Text(fmtDateShort(today), style = Tx.Label)
+            IconButton(onClick = onSettings) {
+                Icon(Lucide.Settings, contentDescription = "Ajustes", tint = Pc.TextSecondary, modifier = Modifier.size(22.dp))
+            }
         }
-        Gap(32)
+        Gap(24)
         Text(if (finished) "Sprint completado" else "Sprint de ${sprint.lengthDays} días", style = Tx.Label)
         Row(verticalAlignment = Alignment.Bottom) {
             Text(if (finished) "${sprint.lengthDays}" else "Día $dayNum", style = Tx.Display)

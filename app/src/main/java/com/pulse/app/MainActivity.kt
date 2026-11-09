@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -63,14 +64,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class Tab(val label: String) { HOME("Inicio"), CAL("Calendario"), TRAIN("Entrenar"), MEAS("Progreso"), SET("Ajustes") }
+enum class Tab(val label: String) { HOME("Inicio"), CAL("Calendario"), TRAIN("Entrenar"), MEAS("Progreso"), FOOD("Comida") }
 
 private fun Tab.icon(): ImageVector = when (this) {
     Tab.HOME -> Lucide.House
     Tab.CAL -> Lucide.CalendarDays
     Tab.TRAIN -> Lucide.Dumbbell
     Tab.MEAS -> Lucide.TrendingDown
-    Tab.SET -> Lucide.Settings
+    Tab.FOOD -> Lucide.Utensils
 }
 
 @Composable
@@ -113,17 +114,33 @@ fun SplashScreen() {
 fun MainScaffold(store: Store) {
     var tab by rememberSaveable { mutableStateOf(Tab.HOME) }
     var openMeasure by remember { mutableIntStateOf(0) }
+    var showSettings by remember { mutableStateOf(false) }
+    BackHandler(enabled = showSettings) { showSettings = false }
     Scaffold(
         containerColor = Pc.Background,
-        bottomBar = { BottomBar(tab) { tab = it } },
+        bottomBar = {
+            BottomBar(tab) {
+                tab = it
+                showSettings = false
+            }
+        },
     ) { pad ->
         Box(Modifier.padding(pad).fillMaxSize()) {
-            when (tab) {
-                Tab.HOME -> DashboardScreen(store, onTrain = { tab = Tab.TRAIN }, onMeasure = { openMeasure++; tab = Tab.MEAS })
-                Tab.CAL -> CalendarScreen(store)
-                Tab.TRAIN -> WorkoutScreen(store, onExit = { tab = Tab.HOME })
-                Tab.MEAS -> MeasurementsScreen(store, openFormSignal = openMeasure)
-                Tab.SET -> SettingsScreen(store)
+            if (showSettings) {
+                SettingsScreen(store, onBack = { showSettings = false })
+            } else {
+                when (tab) {
+                    Tab.HOME -> DashboardScreen(
+                        store,
+                        onTrain = { tab = Tab.TRAIN },
+                        onMeasure = { openMeasure++; tab = Tab.MEAS },
+                        onSettings = { showSettings = true },
+                    )
+                    Tab.CAL -> CalendarScreen(store)
+                    Tab.TRAIN -> WorkoutScreen(store, onExit = { tab = Tab.HOME })
+                    Tab.MEAS -> MeasurementsScreen(store, openFormSignal = openMeasure)
+                    Tab.FOOD -> FoodScreen(store)
+                }
             }
         }
     }

@@ -18,6 +18,7 @@ data class Settings(
     val workoutDays: Set<Int> = setOf(1, 2, 3, 4, 5, 6),
     val weigh: Reminder = Reminder(true, 5, 15),
     val walk: Reminder = Reminder(false, 19, 0),
+    val sound: Boolean = true,
 )
 
 data class AppData(
@@ -27,6 +28,7 @@ data class AppData(
     val loads: Map<String, List<LoadEntry>> = emptyMap(),
     val settings: Settings = Settings(),
     val history: List<SprintSummary> = emptyList(),
+    val food: FoodData = FoodData(),
 )
 
 private const val PREFS = "pulse"
@@ -83,7 +85,8 @@ fun AppData.toJson(): String {
         .put("workout", settings.workout.json())
         .put("workoutDays", days)
         .put("weigh", settings.weigh.json())
-        .put("walk", settings.walk.json()))
+        .put("walk", settings.walk.json())
+        .put("sound", settings.sound))
     val h = JSONArray()
     history.forEach { s ->
         val j = JSONObject().put("startDay", s.startDay).put("endDay", s.endDay).put("startWeight", s.startWeight)
@@ -92,6 +95,7 @@ fun AppData.toJson(): String {
         h.put(j)
     }
     o.put("history", h)
+    o.put("food", food.toJson())
     return o.toString()
 }
 
@@ -133,6 +137,7 @@ fun parseAppData(text: String): AppData {
         workoutDays = st.optJSONArray("workoutDays")?.let { a -> (0 until a.length()).map { a.getInt(it) }.toSet() } ?: def.workoutDays,
         weigh = reminderFrom(st.optJSONObject("weigh"), def.weigh),
         walk = reminderFrom(st.optJSONObject("walk"), def.walk),
+        sound = st.optBoolean("sound", true),
     )
     val hist = mutableListOf<SprintSummary>()
     o.optJSONArray("history")?.let { a ->
@@ -145,5 +150,5 @@ fun parseAppData(text: String): AppData {
             ))
         }
     }
-    return AppData(sprint, ms.sortedBy { it.day }, done, loads, settings, hist)
+    return AppData(sprint, ms.sortedBy { it.day }, done, loads, settings, hist, parseFood(o.optJSONObject("food")))
 }

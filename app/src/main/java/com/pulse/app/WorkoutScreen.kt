@@ -145,9 +145,14 @@ private fun WorkoutRunner(flat: List<Pair<String, Item>>, store: Store, onFinish
     var rest by remember { mutableIntStateOf(0) }
     val haptic = LocalHapticFeedback.current
     val view = LocalView.current
+    val beeper = remember { Beeper() }
+    val sound = store.data.settings.sound
     DisposableEffect(Unit) {
         view.keepScreenOn = true
-        onDispose { view.keepScreenOn = false }
+        onDispose {
+            view.keepScreenOn = false
+            beeper.release()
+        }
     }
 
     val (blockTitle, item) = flat[index]
@@ -181,7 +186,11 @@ private fun WorkoutRunner(flat: List<Pair<String, Item>>, store: Store, onFinish
         if (rest > 0) {
             delay(1000)
             rest -= 1
-            if (rest == 0) haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+            if (sound && rest in 1..3) beeper.short()
+            if (rest == 0) {
+                if (sound) beeper.long()
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+            }
         }
     }
     LaunchedEffect(running, timeLeft) {
@@ -189,6 +198,8 @@ private fun WorkoutRunner(flat: List<Pair<String, Item>>, store: Store, onFinish
             if (timeLeft > 0) {
                 delay(1000)
                 timeLeft -= 1
+                if (sound && timeLeft in 1..3) beeper.short()
+                if (sound && timeLeft == 0) beeper.long()
             } else {
                 completeSet()
             }

@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.sp
 import java.time.LocalDate
 
 @Composable
-fun SettingsScreen(store: Store) {
+fun SettingsScreen(store: Store, onBack: (() -> Unit)? = null) {
     val ctx = LocalContext.current
     val data = store.data
     val sprint = data.sprint ?: return
@@ -66,6 +66,14 @@ fun SettingsScreen(store: Store) {
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 20.dp),
     ) {
+        if (onBack != null) {
+            Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = onBack, modifier = Modifier.padding(start = 0.dp)) {
+                    Icon(Lucide.ChevronLeft, contentDescription = "Volver", tint = Pc.TextPrimary)
+                }
+                Text("Volver", style = Tx.Label)
+            }
+        }
         ScreenTitle("Ajustes")
 
         if (!granted) {
@@ -85,6 +93,32 @@ fun SettingsScreen(store: Store) {
             }
             Gap(20)
         }
+
+        Text("Entrenamiento", style = Tx.H3)
+        Gap(10)
+        PCard {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text("Pitidos del temporizador", style = Tx.H3)
+                    Gap(2)
+                    Text("Tres pitidos cortos en los últimos 3 segundos y uno largo al terminar. Suenan aunque el teléfono esté en vibración, con el volumen de alarma.", style = Tx.BodySecondary)
+                }
+                HGap(12)
+                Switch(
+                    checked = s.sound,
+                    onCheckedChange = { on -> store.update { d -> d.copy(settings = d.settings.copy(sound = on)) } },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = Pc.OnAccent,
+                        checkedTrackColor = Pc.Accent,
+                        checkedBorderColor = Pc.Accent,
+                        uncheckedThumbColor = Pc.TextSecondary,
+                        uncheckedTrackColor = Pc.SurfaceElevated,
+                        uncheckedBorderColor = Pc.Border,
+                    ),
+                )
+            }
+        }
+        Gap(28)
 
         Text("Recordatorios", style = Tx.H3)
         Gap(10)
